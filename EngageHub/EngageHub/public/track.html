@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Complaint | Civic.AI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --hover-blue: #1d4ed8;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --nav-text: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #166534;
+            --pending: #854d0e;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar Styles (Same as other pages) --- */
+        .navbar {
+            background: white;
+            padding: 15px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--primary-blue); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--nav-text);
+            font-weight: 500;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-blue);
+        }
+
+        .report-btn {
+            background: var(--primary-blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .report-btn:hover { background: var(--hover-blue); }
+
+        /* --- Main Content Section (Centering the card) --- */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px); /* adjusted for nav height */
+            padding: 40px 20px;
+        }
+
+        /* --- Main Tracking Card --- */
+        .tracking-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+            width: 500px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: #0f172a;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Search Input Area --- */
+        .search-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            background: #ffffff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .track-btn {
+            padding: 14px 24px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .track-btn:hover {
+            background-color: var(--hover-blue);
+            transform: translateY(-1px);
+        }
+
+        /* --- Detailed Result Area --- */
+        #resultArea {
+            display: none; /* Initially Hidden */
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+            text-align: left;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Visual Status Tracker Steps */
+        .status-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        /* Progress Bar Line */
+        .status-tracker::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            width: 30%;
+        }
+
+        .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .step-text {
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Active/Complete Step Styles */
+        .step.active .icon-circle {
+            border-color: var(--primary-blue);
+            background-color: #eff6ff;
+            color: var(--primary-blue);
+        }
+
+        .step.complete .icon-circle {
+            border-color: var(--primary-blue);
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .step.complete .step-text, .step.active .step-text {
+            color: var(--primary-blue);
+        }
+
+        /* Department Badge */
+        .dept-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 12px;
+            background-color: #f1f5f9;
+            border-radius: 20px;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .dept-label { font-weight: 500; color: var(--text-muted); margin-bottom: 6px; font-size: 12px;}
+
+        /* Error/NotFound message */
+        .error-msg {
+            color: #b91c1c;
+            background: #fef2f2;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #fecaca;
+            display: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 900px) {
+            .navbar { padding: 15px 5%; }
+            .nav-links { display: none; } /* Mobile par links hide kar diye */
+            .tracking-card { width: 95%; padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar animate__animated animate__fadeInDown">
+        <a href="index.html" class="logo"><span>C</span> Civic.AI</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="complaint.html">Submit Complaint</a></li>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="track.html" class="active">Track Complaint</a></li>
+            <li><a href="admin.html">Admin</a></li>
+        </ul>
+        <a href="complaint.html" class="report-btn">Report Issue</a>
+    </nav>
+
+    <div class="main-content">
+        <div class="tracking-card animate__animated animate__zoomIn">
+            <h2>Track Complaint</h2>
+            <p class="subtitle">Enter your unique Complaint ID to check its real-time routing status.</p>
+
+            <div class="search-area">
+                <input id="complaintId" placeholder="e.g. CIV-200326-ABCD">
+                <button class="track-btn" onclick="track()">🚀 Track Now</button>
+            </div>
+
+            <div class="error-msg" id="errorMsg">
+                ⚠️ ID not found. Please check and try again, or make sure the server is running.
+            </div>
+
+            <div id="resultArea">
+                <div class="dept-label">DEPARTMENT</div>
+                <div class="dept-badge">
+                    <span>⚙️</span> <span id="deptName">Predicting...</span>
+                </div>
+                
+                <br><br>
+                
+                <div class="dept-label">STATUS PROGRESS</div>
+                <div class="status-tracker">
+                    <div class="step" id="step1">
+                        <div class="icon-circle">⏳</div>
+                        <div class="step-text">Pending</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="icon-circle">👷</div>
+                        <div class="step-text">In Progress</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="icon-circle">✅</div>
+                        <div class="step-text">Resolved</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+async function track(){
+    const id = document.getElementById("complaintId").value;
+    const resultArea = document.getElementById("resultArea");
+    const errorMsg = document.getElementById("errorMsg");
+    const deptName = document.getElementById("deptName");
+    const steps = [document.getElementById("step1"), document.getElementById("step2"), document.getElementById("step3")];
+
+    // Reset previous states
+    resultArea.style.display = "none";
+    errorMsg.style.display = "none";
+    steps.forEach(step => step.classList.remove("active", "complete"));
+
+    if(!id){
+        alert("Please enter a Complaint ID!");
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://localhost:5000/complaint/${id}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || 'Server error');
+        }
+
+        // --- Actual Data Loading (Backend status reads) ---
+        const status = data.status || "Pending"; // Backend status
+        deptName.innerText = data.department || "Routing General...";
+
+        // Update Steps UI based on status
+        if (status === "Pending") {
+            steps[0].classList.add("active");
+        } else if (status === "In Progress") {
+            steps[0].classList.add("complete");
+            steps[1].classList.add("active");
+        } else if (status === "Resolved") {
+            steps[0].classList.add("complete");
+            steps[1].classList.add("complete");
+            steps[2].classList.add("complete");
+        }
+
+        // Show Result Area
+        resultArea.style.display = "block";
+
+    } catch (err) {
+        // ID Not Found or Server Down
+        console.error('Tracking error:', err);
+        errorMsg.style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>

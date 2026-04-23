@@ -1,0 +1,33 @@
+{
+  "name": "engagehub",
+  "version": "1.0.0",
+  "description": "Here you can do your work",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashtomarrr/EngageHub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yashtomarrr/EngageHub/issues"
+  },
+  "homepage": "https://github.com/yashtomarrr/EngageHub#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.1",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.3",
+    "socket.io": "^4.8.3",
+    "twilio": "^5.13.0"
+  }
+}

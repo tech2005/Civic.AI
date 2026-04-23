@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - CivicAI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --bg-color: #f4f7fb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: var(--bg-color);
+        }
+
+        /* --- NAVBAR (Same as Complaint/Admin) --- */
+        .header-inner { 
+            background: #fff; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); 
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container { 
+            max-width: 1150px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        .nav-container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .logo-text { 
+            font-size: 24px; 
+            font-weight: 700; 
+            color: #333; 
+            margin: 0; 
+            text-decoration: none; 
+        }
+        .logo-text span { color: #2ea6f7; }
+        
+        .menu { 
+            list-style: none; 
+            display: flex; 
+            gap: 30px; 
+            margin: 0; 
+            padding: 0; 
+        }
+        .menu li a { 
+            text-decoration: none; 
+            color: #555; 
+            font-weight: 500; 
+            transition: 0.3s; 
+            font-size: 15px; 
+        }
+        .menu li.active a { 
+            color: #2ea6f7; 
+            font-weight: 700; 
+        }
+        .menu li a:hover { color: #2ea6f7; }
+
+        .report-btn { 
+            background: var(--primary-gradient); 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 14px; 
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3); 
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .hero h1 { font-size: 42px; margin-bottom: 10px; }
+        .hero p { font-size: 18px; opacity: 0.9; }
+
+        /* --- FEATURES CARDS --- */
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            width: 280px;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .icon { font-size: 45px; margin-bottom: 15px; display: block; }
+        .card h3 { color: #333; margin-bottom: 10px; }
+        .card p { color: #777; font-size: 14px; line-height: 1.6; }
+
+        /* --- HOW IT WORKS --- */
+        .steps { text-align: center; padding: 80px 20px; background: white; }
+        .steps h2 { font-size: 32px; margin-bottom: 40px; color: #333; }
+        .step-box { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .step {
+            width: 220px;
+            background: #f8fafc;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* --- STATS --- */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 80px 20px;
+            background: #2ea6f7;
+            color: white;
+        }
+        .stat h2 { font-size: 45px; margin: 0; }
+        .stat p { font-size: 16px; opacity: 0.8; margin-top: 5px; }
+
+        /* --- CTA --- */
+        .cta { text-align: center; padding: 100px 20px; }
+        .cta h2 { font-size: 32px; margin-bottom: 30px; }
+        .cta-button {
+            padding: 15px 40px;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+            transition: 0.3s;
+        }
+        .cta-button:hover { transform: scale(1.05); }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR (Auto-Redirect Fixed) -->
+    <header class="header-inner">
+        <div class="container">
+            <div class="nav-container">
+                <a href="index.html" class="logo-text">Civic<span>.AI</span></a>
+                <nav>
+                    <ul class="menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="complaint.html">Submit Complaint</a></li>
+                        <li class="active"><a href="features.html">Features</a></li>
+                        <li><a href="track.html">Track Complaint</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </nav>
+                <a href="complaint.html" class="report-btn">Report Issue</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Powerful AI Features</h1>
+        <p>Civic.AI uses advanced technology to make city management efficient</p>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-container">
+        <div class="card">
+            <span class="icon">🤖</span>
+            <h3>AI Classification</h3>
+            <p>Automatically detects the correct department for every issue.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">⚡</span>
+            <h3>Priority Detection</h3>
+            <p>Identifies urgent complaints instantly to save lives.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">📤</span>
+            <h3>Smart Routing</h3>
+            <p>Directly sends data to the responsible government authority.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">📊</span>
+            <h3>Live Dashboard</h3>
+            <p>Real-time monitoring for admins to track progress.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">📍</span>
+            <h3>GPS Tracking</h3>
+            <p>Auto-captures precise location of the reported problem.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">📧</span>
+            <h3>Notifications</h3>
+            <p>Get instant email updates on your complaint status.</p>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="steps">
+        <h2>Simple 4-Step Process</h2>
+        <div class="step-box">
+            <div class="step">1. 📝 Submit Issue</div>
+            <div class="step">2. 🤖 AI Analysis</div>
+            <div class="step">3. 📤 Smart Route</div>
+            <div class="step">4. ✅ Resolution</div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="stat">
+            <h2>500+</h2>
+            <p>Complaints Solved</p>
+        </div>
+        <div class="stat">
+            <h2>98%</h2>
+            <p>Accuracy Rate</p>
+        </div>
+        <div class="stat">
+            <h2>24/7</h2>
+            <p>AI Support</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Ready to make your city better?</h2>
+        <button class="cta-button" onclick="window.location.href='complaint.html'">
+            Report an Issue Now
+        </button>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic.AI | Submit Complaint</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --bg-color: #f4f7fb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Navbar (Consistent with Admin/Track) --- */
+        .header-inner { background: #fff; box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
+        .logo-text { font-size: 24px; font-weight: 700; color: #333; margin: 0; text-decoration: none; }
+        .logo-text span { color: #2ea6f7; }
+        
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1150px; margin: 0 auto; padding: 0 20px; }
+        .menu { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .menu li a { text-decoration: none; color: #555; font-weight: 500; transition: 0.3s; font-size: 14px; }
+        .menu li.active a { color: #2ea6f7; font-weight: 700; }
+        .menu li a:hover { color: #2ea6f7; }
+
+        .logout-btn { background: var(--primary-gradient); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; }
+
+        /* --- Page Header --- */
+        .page-header {
+            background: var(--primary-gradient);
+            padding: 80px 0 120px;
+            color: white;
+            text-align: center;
+        }
+
+        /* --- Form Wrapper --- */
+        .form-wrapper {
+            max-width: 650px;
+            margin: -70px auto 50px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .input-group-custom { margin-bottom: 20px; text-align: left; }
+        label { font-size: 13px; font-weight: 600; color: #777; margin-bottom: 8px; display: block; }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus { border-color: #4facfe; box-shadow: 0 0 8px rgba(79, 172, 254, 0.2); }
+
+        /* --- Voice Button --- */
+        .voice-btn {
+            background: #f0f7ff; color: #2ea6f7; border: none;
+            padding: 10px 18px; border-radius: 8px; cursor: pointer;
+            font-weight: 600; margin-top: 10px; display: flex; align-items: center; gap: 8px;
+        }
+        .voice-btn.active { background: #fee2e2; color: #ef4444; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* --- Submit Button --- */
+        .btn-submit {
+            width: 100%; background: var(--primary-gradient); color: white;
+            border: none; padding: 15px; border-radius: 12px; font-weight: 700;
+            font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4); }
+        .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .row { display: flex; gap: 20px; }
+        .col { flex: 1; }
+    </style>
+</head>
+<body>
+
+    <header class="header-inner">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" class="logo-text">Civic<span>.AI</span></a>
+            </div>
+            <nav>
+                <ul class="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="complaint.html">Submit Complaint</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="track.html">Track Complaint</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                </ul>
+            </nav>
+            <a href="login.html" class="logout-btn" onclick="localStorage.removeItem('token')">Logout</a>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h2 style="font-weight: 700; color: white; margin: 0;">Report an Issue</h2>
+            <p>Your voice matters. Let AI route your complaint to the right place.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="input-group-custom">
+                <label>Prefer Your Language</label>
+                <select id="langSelect">
+                    <option value="en-IN">English (India)</option>
+                    <option value="hi-IN">Hindi (हिन्दी)</option>
+                </select>
+            </div>
+
+            <div class="input-group-custom">
+                <label>Issue Description</label>
+                <textarea id="text" rows="4" placeholder="Describe the problem... (e.g. Broken streetlight, Pothole)"></textarea>
+                <button class="voice-btn" id="voiceBtn" onclick="startVoice()">
+                    <i class="fas fa-microphone"></i> Start Voice Typing
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group-custom">
+                        <label>Location Name</label>
+                        <input id="location" placeholder="📍 Area or Street">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group-custom">
+                        <label>Email ID</label>
+                        <input id="email" type="email" placeholder="📧 For updates">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group-custom">
+                        <label>Image Proof</label>
+                        <input type="file" id="image" accept="image/*">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group-custom">
+                        <label>Video Proof</label>
+                        <input type="file" id="video" accept="video/*">
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-submit" id="submitBtn" onclick="submitComplaint()">
+                SUBMIT COMPLAINT <i class="fas fa-paper-plane" style="margin-left:8px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Route Guard
+        if (!localStorage.getItem("token")) {
+            alert("Access Denied! Please Login first.");
+            window.location.href = "login.html";
+        }
+
+        // Voice Support Logic
+        function startVoice() {
+            const btn = document.getElementById("voiceBtn");
+            const lang = document.getElementById("langSelect").value;
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = lang;
+
+            recognition.onstart = () => {
+                btn.innerHTML = '<i class="fas fa-dot-circle"></i> Listening...';
+                btn.classList.add("active");
+            };
+
+            recognition.onresult = (e) => {
+                document.getElementById("text").value = e.results[0][0].transcript;
+            };
+
+            recognition.onend = () => {
+                btn.innerHTML = '<i class="fas fa-microphone"></i> Start Voice Typing';
+                btn.classList.remove("active");
+            };
+            recognition.start();
+        }
+
+        // Final Submit with Auto-GPS
+        async function submitComplaint() {
+            const btn = document.getElementById("submitBtn");
+            const token = localStorage.getItem("token");
+            
+            if(!document.getElementById("text").value || !document.getElementById("location").value) {
+                return alert("Please fill Description and Location!");
+            }
+
+            btn.innerText = "Processing Location...";
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append("text", document.getElementById("text").value);
+            formData.append("location", document.getElementById("location").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("image", document.getElementById("image").files[0]);
+            formData.append("video", document.getElementById("video").files[0]);
+
+            // GPS Fetching with Promise for better sync
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 6000 });
+                });
+                formData.append("lat", position.coords.latitude);
+                formData.append("lng", position.coords.longitude);
+            } catch (err) {
+                console.warn("GPS failed or timed out.");
+                formData.append("lat", 0);
+                formData.append("lng", 0);
+            }
+
+            btn.innerText = "Uploading to Civic.AI...";
+
+            try {
+                const res = await fetch("http://localhost:5000/complaint", {
+                    method: "POST",
+                    headers: { "authorization": token },
+                    body: formData
+                });
+
+                const data = await res.json();
+                
+                if(res.ok) {
+                    alert(`SUCCESS!\n\nTicket ID: ${data.id}\nDept: ${data.department}\nPriority: ${data.priority}\n\nNote: Use this ID in 'Track Complaint' page.`);
+                    window.location.reload();
+                } else {
+                    throw new Error(data.msg || "Submission Failed");
+                }
+            } catch (err) {
+                alert(" Error: " + err.message);
+                btn.innerText = "SUBMIT COMPLAINT";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

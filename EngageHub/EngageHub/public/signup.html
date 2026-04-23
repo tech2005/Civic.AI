@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic.AI | Create New Account</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f4f8;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* --- Animated Signup Card --- */
+        .signup-card {
+            width: 100%;
+            max-width: 380px;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeInScale 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .logo span { color: #2ea6f7; }
+
+        .subtitle {
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Input Group Styling --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            transition: 0.3s;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 50px;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            background: #f8fafc;
+        }
+
+        input:focus {
+            border-color: #4facfe;
+            background: #ffffff;
+            box-shadow: 0 0 12px rgba(79, 172, 254, 0.1);
+        }
+
+        input:focus + i { color: #4facfe; }
+
+        /* --- Signup Button --- */
+        .btn-signup {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-signup:active { transform: translateY(0); }
+
+        /* --- Login Link Styling --- */
+        .login-link {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .login-link a {
+            color: #2ea6f7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .login-link a:hover { text-decoration: underline; color: #1d8cf8; }
+
+        /* --- Spinner --- */
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+
+<body>
+
+<div class="signup-card">
+    <div class="logo">Civic<span>.AI</span></div>
+    <p class="subtitle">Enter your details to register as a new member</p>
+
+    <div class="input-group">
+        <input id="user" placeholder="Choose a Username" autocomplete="off">
+        <i class="fas fa-user-plus"></i>
+    </div>
+
+    <div class="input-group">
+        <input id="pass" type="password" placeholder="Create a Strong Password">
+        <i class="fas fa-key"></i>
+    </div>
+
+    <button class="btn-signup" onclick="signup()" id="sBtn">
+        Create Account <div class="spinner" id="sLoad"></div>
+    </button>
+
+    <div class="login-link">
+        Already have an account? <a href="login.html">Login Now <i class="fas fa-arrow-right" style="font-size:11px"></i></a>
+    </div>
+
+    <div style="margin-top: 30px; font-size: 11px; color: #cbd5e1;">© Civic.AI Society Manager</div>
+</div>
+
+<script>
+    async function signup() {
+        const u = document.getElementById("user").value;
+        const p = document.getElementById("pass").value;
+        const btn = document.getElementById("sBtn");
+        const loader = document.getElementById("sLoad");
+
+        // Basic validation
+        if (!u || !p) {
+            alert("⚠️ Please enter Username and Password!");
+            return;
+        }
+
+        // UI Feedback: Button Disable & Loading show
+        btn.disabled = true;
+        loader.style.display = "inline-block";
+        btn.innerHTML = 'Registering <div class="spinner" id="sLoad" style="display:inline-block"></div>';
+
+        try {
+            const res = await fetch("http://localhost:5000/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: u,
+                    password: p
+                })
+            });
+
+            const data = await res.json();
+            
+            // Backend's response message
+            alert(data.msg);
+
+            // Conditional Redirect
+            if (data.msg === "Signup successful" || res.ok) {
+    alert("🎉 Account Created! Please login now to submit your complaint.");
+    window.location.href = "login.html"; // Signup ke baad Login par bhej dega
+}
+            if (data.msg === "Signup successful") {
+                // Success: Fields clear and redirect to login
+                document.getElementById("user").value = "";
+                document.getElementById("password").value = "";
+                window.location.href = "login.html";
+            } else {
+                // Fail: Reset button but stay on page
+                btn.disabled = false;
+                loader.style.display = "none";
+                btn.innerHTML = 'Create Account <div class="spinner" id="sLoad"></div>';
+            }
+
+        } catch (err) {
+            alert("🚫 Server Connection Error. Check if your backend is running.");
+            console.error(err);
+            
+            // Reset button
+            btn.disabled = false;
+            loader.style.display = "none";
+            btn.innerHTML = 'Create Account <div class="spinner" id="sLoad"></div>';
+        }
+    }
+</script>
+
+</body>
+</html>

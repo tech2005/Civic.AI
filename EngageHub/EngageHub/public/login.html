@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic.AI | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --grad: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        body { font-family: 'Poppins', sans-serif; background: #f4f7fb; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .box { width: 100%; max-width: 380px; background: #fff; padding: 40px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
+        .logo { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 25px; }
+        .logo span { color: #2ea6f7; }
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        input { width: 100%; padding: 12px 15px 12px 45px; border: 1.5px solid #e2e8f0; border-radius: 12px; outline: none; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 14px; background: var(--grad); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; box-shadow: 0 8px 15px rgba(79, 172, 254, 0.3); }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <div class="logo">Civic<span>.AI</span></div>
+    
+    <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input id="user" placeholder="Username">
+    </div>
+
+    <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input id="pass" type="password" placeholder="Password">
+    </div>
+
+    <button class="btn-login" id="lBtn" onclick="login()">Login</button>
+    <p style="margin-top: 20px; font-size: 13px;">New here? <a href="signup.html" style="color:#2ea6f7; text-decoration:none; font-weight:600;">Create Account</a></p>
+</div>
+
+<script>
+async function login(){
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+
+    const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u, password: p })
+    });
+
+    const data = await res.json();
+
+    if(data.token){
+        localStorage.setItem("token", data.token);
+        window.location.href = "complaint.html";
+    } else {
+        alert(data.msg || "Login Failed");
+    }
+}
+</script>
+</body>
+</html>
